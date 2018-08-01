@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <title>book2png</title>
+    <link rel="stylesheet" href="book2png.css">
+    <script type="text/javascript" src="card_data.json"></script>
+    <script src="fetch.js"></script>
+    
+</head>
+
+<body>
+    <div class="flex-container">
+        <a href=# class="butt" onclick="selectFilter('Creature')">Creatures</a>
+        <a href=# class="butt" onclick="selectFilter('Creature','Neutral')">Neutral</a>
+        <a href=# class="butt" onclick="selectFilter('Creature','Fire')">Fire</a>
+        <a href=# class="butt" onclick="selectFilter('Creature','Water')">Water</a>
+        <a href=# class="butt" onclick="selectFilter('Creature','Earth')">Earth</a>
+        <a href=# class="butt" onclick="selectFilter('Creature','Air')">Air</a>
+        <a href=# class="butt" onclick="selectFilter('Item')">Items</a>
+        <a href=# class="butt" onclick="selectFilter('Item','Weapon')">Weapons</a>
+        <a href=# class="butt" onclick="selectFilter('Item','Armor')">Armor</a>
+        <a href=# class="butt" onclick="selectFilter('Item','Tool')">Tools</a>
+        <a href=# class="butt" onclick="selectFilter('Item','Scroll')">Scrolls</a>
+    </div>
+    <div class="flex-container">
+        <a href=# class="butt" onclick="selectFilter()">All</a>
+        <a href=# class="butt" onclick="selectFilter('Spell')">Spells</a>
+        <a href=# class="butt" onclick="selectFilter('Spell','Instant')">Instant</a>
+        <a href=# class="butt" onclick="selectFilter('Spell','Multi-Instant')">Multi-Instant</a>
+        <a href=# class="butt" onclick="selectFilter('Spell','Enchant')">Enchant</a>
+        <a href=# class="butt" onclick="selectFilter('Spell','Multi-Enchant')">Multi-Enchant</a>
+        <a href=# class="butt" onclick="selectFilter('Spell','Global')">Global</a>
+        <input type="search" placeholder="Search..">
+    </div>
+    <div style="float:left;" class="cardSelectionArea"></div>
+    <div style="float:left;" class="editBookArea"></div>
+    <script type="text/javascript">
+        window.onload = selectFilter();
+    </script>
+</body>
+
+</html>
