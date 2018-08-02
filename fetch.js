@@ -2,19 +2,7 @@ var card_data = [];
 var slot_map = new Map();
 var bookCounter = 0;
 
-//function magicSorter(cardNum, wrapper)
-//{
-//	const bookArea = document.querySelector(".editBookArea");
-//	const bookAreaChildren = document.querySelector(".editBookArea").childNodes;
-//	for(let i = 0; i < bookAreaChildren.length; i++)
-//	{
-//		if (parseInt(bookAreaChildren[i].id) > cardNum)
-//		{
-//			var insert = bookArea.insertBefore(wrapper, bookareaChildren[i]);
-//		}
-//	}
-//	//access parent get each child's id and compare data.num's get the one that's right after current num's and insert before
-//}
+
 function addToBook(cardName,cardNum)
 {
 	if(!slot_map.has(cardName) && bookCounter < 50)
@@ -25,7 +13,10 @@ function addToBook(cardName,cardNum)
 		const wrapper = document.createElement('div');
 		wrapper.setAttribute("class", "flex-container");
 		wrapper.setAttribute("id", cardName);
+
+		//flexbox autosorts them according to their card number property <3
 		wrapper.style.order = cardNum;
+
 		const slot = document.createElement('div');
 		slot.classList.add("name");
 		slot.innerText = cardName;
@@ -39,7 +30,6 @@ function addToBook(cardName,cardNum)
 	
 		wrapper.addEventListener("click", function(){removeFromBook(cardName)},false);
 		bookArea.appendChild(wrapper);
-		//magicSorter(cardNum,wrapper);
 		bookCounter++;
 	}
 	else if( slot_map.get(cardName) < 4 && bookCounter < 50)
@@ -84,7 +74,7 @@ function editSlotCount(cardName, addOrSubtract)
 
 function cardCreation(cardInfo)
 {
-	const card = document.createElement('div');
+	const card = document.createElement('img');
 	const selectionArea = document.querySelector(".cardSelectionArea");
 	card.classList.add("card");
 	const cardName = cardInfo.name.toLowerCase().replace(/[^a-z0-9+]+/gi, '');
@@ -109,8 +99,8 @@ function cardCreation(cardInfo)
 	{
 	    imageLocation = "items";
 	}
-	const link = "./" + imageLocation + "/" + cardName + ".jpg";
-	card.style.backgroundImage = 'url(' + link + ')';
+	const link = "./images/thumbnails/" + imageLocation + "/" + cardName + ".jpg";
+	card.src = link;
 
 	card.addEventListener("click", function(){addToBook(cardInfo.name, cardInfo.num)},false);
 	selectionArea.appendChild(card);
