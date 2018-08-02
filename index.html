@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="book2png.css">
     <script type="text/javascript" src="card_data.json"></script>
     <script src="fetch.js"></script>
-    
 </head>
 
 <body>
@@ -33,11 +32,15 @@
         <input type="search" placeholder="Search..">
     </div>
     <div class="flex-container">
-    <div style="float:left;" class="cardSelectionArea"></div>
-    <div style="float:left;" class="editBookArea"></div>
+        <div style="float:left;" class="cardSelectionArea"></div>
+        <div style="float:left;" class="editBookArea"></div>
+        <div style="margin-left:3px;" href=# class="butt"  onclick="book2png()">book2png</div>
+
+        
     </div>
+        <canvas id="canvas" width="600" height="400"></canvas>
     <script type="text/javascript">
-        window.onload = selectFilter();
+    window.onload = selectFilter();
     </script>
 </body>
 

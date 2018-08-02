@@ -2,7 +2,42 @@ var card_data = [];
 var slot_map = new Map();
 var bookCounter = 0;
 
+function book2png()
+{
+	var canvas = document.querySelector('canvas');
+	var ctx = canvas.getContext('2d');
+	canvas.height = Math.floor((slot_map.size / 6 + 1)) * 125;
+	const cardsData = document.querySelector(".editBookArea").childNodes;
+	const selectionArea = document.querySelector(".cardSelectionArea");
+	var canY = 0;
+	var canX = 0;
 
+	for(let i = 0; i < cardsData.length; i++)
+	{
+		console.log(cardsData[i]);
+		var refImg = selectionArea.querySelector('[title=' + CSS.escape(cardsData[i].id) + ']');
+		var img = new Image();
+		img.src = refImg.src;
+		ctx.drawImage(img,canX,canY);
+		canX = (canX + 100) % 600;
+		if(canX == 0 && i != 0)
+		{
+			canY += 125;
+		}
+	}
+	//var img = new Image();
+	//img.src = "./images/thumbnails/air/aeroduchess.jpg";
+	//var img2 = new Image();
+	//img2.src = "./images/thumbnails/air/aeroduchess.jpg";
+	//ctx.font = "30px Arial";
+	//ctx.fillText("Hello World", 10, 50); 
+	//ctx.drawImage(img,0,0);
+	//ctx.drawImage(img2,100,0);
+
+	
+
+	
+}
 function addToBook(cardName,cardNum)
 {
 	if(!slot_map.has(cardName) && bookCounter < 50)
@@ -74,10 +109,13 @@ function editSlotCount(cardName, addOrSubtract)
 
 function cardCreation(cardInfo)
 {
-	const card = document.createElement('img');
 	const selectionArea = document.querySelector(".cardSelectionArea");
+	const card = document.createElement('img');
+	card.title = cardInfo.name;
 	card.classList.add("card");
+
 	const cardName = cardInfo.name.toLowerCase().replace(/[^a-z0-9+]+/gi, '');
+
 	let imageLocation = "";
 
 	if (cardInfo.type === "Creature") 
