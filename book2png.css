@@ -17,7 +17,7 @@ body{
 }
 div.cardSelectionArea{
 	background-color: lightblue;
-    width: 1050px;
+    width: 1055px;
     height: 600px;
     overflow: scroll;
 }
