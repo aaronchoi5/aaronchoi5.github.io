@@ -6,44 +6,57 @@ function book2png()
 {
 	var canvas = document.querySelector('canvas');
 	var ctx = canvas.getContext('2d');
+	
+
+	
 	canvas.height = Math.floor((slot_map.size / 6 + 1)) * 125;
-	const cardsData = document.querySelector(".editBookArea").childNodes;
+	const cardsData = document.querySelector(".editBookArea").childNodes;// sort childnodes?slot_map?
 	const selectionArea = document.querySelector(".cardSelectionArea");
 	var canY = 0;
 	var canX = 0;
 
 	for(let i = 0; i < cardsData.length; i++)
 	{
-		console.log(cardsData[i]);
-		var refImg = selectionArea.querySelector('[title=' + CSS.escape(cardsData[i].id) + ']');
+		var number = slot_map.get(cardsData[i].id)[0].toString()
 		var img = new Image();
-		img.src = refImg.src;
+		img.src = slot_map.get(cardsData[i].id)[1];
 		ctx.drawImage(img,canX,canY);
+		if(number > 1)
+		{
+			ctx.strokeStyle='black';
+			ctx.fillStyle='white';
+			ctx.font = "40px Arial";
+			ctx.lineWidth = "1px";
+			ctx.strokeText(number.toString(), (canX + 75), (canY + 120)); 
+			ctx.fillText(number.toString(), (canX + 75), (canY + 120)); 
+		}
+		
 		canX = (canX + 100) % 600;
 		if(canX == 0 && i != 0)
 		{
 			canY += 125;
 		}
-	}
-	//var img = new Image();
-	//img.src = "./images/thumbnails/air/aeroduchess.jpg";
-	//var img2 = new Image();
-	//img2.src = "./images/thumbnails/air/aeroduchess.jpg";
-	//ctx.font = "30px Arial";
-	//ctx.fillText("Hello World", 10, 50); 
-	//ctx.drawImage(img,0,0);
-	//ctx.drawImage(img2,100,0);
-
-	
-
-	
+	}	
 }
-function addToBook(cardName,cardNum)
+function addToBook(cardName,cardNum, link)
 {
 	if(!slot_map.has(cardName) && bookCounter < 50)
 	{
-		slot_map.set(cardName, 1);
+		slot_map.set(cardName, [1, link]);
 		const bookArea = document.querySelector(".editBookArea");
+
+		const cardsData = document.querySelector(".editBookArea").childNodes;
+		var beforeNode = undefined;
+		//console.log(cardsData);
+		for(let i = 0; i < cardsData.length; i++ )
+		{
+			console.log(cardsData[i].style.order);
+			if(cardsData[i].style.order > cardNum )
+			{
+				beforeNode = cardsData[i];
+				break;
+			}
+		}
 
 		const wrapper = document.createElement('div');
 		wrapper.setAttribute("class", "flex-container");
@@ -58,16 +71,23 @@ function addToBook(cardName,cardNum)
 
 		const slotNum = document.createElement('div');
 		slotNum.classList.add("count");
-		slotNum.innerText = slot_map.get(cardName);
+		slotNum.innerText = 1;
 
 		wrapper.appendChild(slot);
 		wrapper.appendChild(slotNum);
-	
 		wrapper.addEventListener("click", function(){removeFromBook(cardName)},false);
-		bookArea.appendChild(wrapper);
+		if( beforeNode === undefined)
+		{
+			bookArea.appendChild(wrapper);
+		}
+		else
+		{
+			bookArea.insertBefore(wrapper, beforeNode);
+		}
+		
 		bookCounter++;
 	}
-	else if( slot_map.get(cardName) < 4 && bookCounter < 50)
+	else if( slot_map.get(cardName)[0] < 4 && bookCounter < 50)
 	{
 		editSlotCount(cardName, "add");
 		bookCounter++;
@@ -78,7 +98,7 @@ function addToBook(cardName,cardNum)
 
 function removeFromBook(cardName)
 {
-	if(slot_map.get(cardName) == 1)
+	if(slot_map.get(cardName)[0] == 1)
 	{
 		const bookArea = document.querySelector(".editBookArea");
 		const slotWrapper = document.getElementById(cardName);
@@ -102,9 +122,10 @@ function editSlotCount(cardName, addOrSubtract)
 	else
 	{
 		updatedCount--;
+		console.log(updatedCount);
 	}
 	countElement.innerText = updatedCount;
-	slot_map.set(cardName, updatedCount);
+	slot_map.set(cardName, [updatedCount, slot_map.get(cardName)[1]]);
 }
 
 function cardCreation(cardInfo)
@@ -140,7 +161,7 @@ function cardCreation(cardInfo)
 	const link = "./images/thumbnails/" + imageLocation + "/" + cardName + ".jpg";
 	card.src = link;
 
-	card.addEventListener("click", function(){addToBook(cardInfo.name, cardInfo.num)},false);
+	card.addEventListener("click", function(){addToBook(cardInfo.name, cardInfo.num, link)},false);
 	selectionArea.appendChild(card);
 }
 function selectFilter()
