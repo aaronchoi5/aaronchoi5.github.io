@@ -7,8 +7,6 @@ function book2png()
 	var canvas = document.querySelector('canvas');
 	var ctx = canvas.getContext('2d');
 	
-
-	
 	canvas.height = Math.floor((slot_map.size / 6 + 1)) * 125;
 	const cardsData = document.querySelector(".editBookArea").childNodes;// sort childnodes?slot_map?
 	const selectionArea = document.querySelector(".cardSelectionArea");
@@ -37,6 +35,38 @@ function book2png()
 			canY += 125;
 		}
 	}	
+}
+function copyListToClipboard()
+{
+	const cardsData = document.querySelector(".editBookArea").childNodes;
+	var outputString = "";
+	for(let i = 0; i < cardsData.length; i++)
+	{
+		outputString += cardsData[i].childNodes[0].innerText + " " + cardsData[i].childNodes[1].innerText + "\n";
+	}
+	//hackysolution
+	const copyToClipboard = str => {
+
+	  const el = document.createElement('textarea');  // Create a <textarea> element
+	  el.value = str;                                 // Set its value to the string that you want copied
+	  el.setAttribute('readonly', '');                // Make it readonly to be tamper-proof
+	  el.style.position = 'absolute';                 
+	  el.style.left = '-9999px';                      // Move outside the screen to make it invisible
+	  document.body.appendChild(el);                  // Append the <textarea> element to the HTML document
+	  const selected =            
+	    document.getSelection().rangeCount > 0        // Check if there is any content selected previously
+	      ? document.getSelection().getRangeAt(0)     // Store selection if found
+	      : false;                                    // Mark as false to know no selection existed before
+	  el.select();                                    // Select the <textarea> content
+	  document.execCommand('copy');                   // Copy - only works as a result of a user action (e.g. click events)
+	  document.body.removeChild(el);                  // Remove the <textarea> element
+	  if (selected) {                                 // If a selection existed before copying
+	    document.getSelection().removeAllRanges();    // Unselect everything on the HTML document
+	    document.getSelection().addRange(selected);   // Restore the original selection
+	  }
+	  
+	};
+	copyToClipboard(outputString);
 }
 function addToBook(cardName,cardNum, link)
 {
