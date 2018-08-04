@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:700italic,400,400italic,700);
 body{
-	background-image: url("card.jpg");
+	background-image: url("./images/bg_pattern_color3.png");
 }
 .flex-container{
 	display:flex;
