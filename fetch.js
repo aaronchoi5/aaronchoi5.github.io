@@ -205,58 +205,28 @@ function showCardInfo(cardInfo)
 	const link = "./images/" + imageLocation + "/" + imageName + ".jpg";
 	card.src = link;
 	
-	const cardName = document.createElement('p');
-	cardName.innerText = "Name: " + cardInfo.name;
-	cardName.style.color = "white";
-	cardName.style.fontSize = "12px";
+	const cardName = "Name: " + cardInfo.name + "\n";
+	const rarity = "Rarity: " + cardInfo.rarity + "\n" ;
+	const type = "Type: " + cardInfo.type + "\n";
+	const attribute = "Attribute: " + cardInfo.attribute + "\n";
+	const cardCost = "Cost: " + cardInfo.costValue + " "+ cardInfo.costOther + "\n";
+	const stAndMHP = "ST/MHP: " + cardInfo.st + "/" + cardInfo.mhp + "\n";
+	const landLimit = "Land Limit: " + cardInfo.placeRestriction + "\n";
+	const itemLimit = "Item Limit: " + cardInfo.itemRestriction + "\n";
+	const abilityText = "Ability Text: " + cardInfo.abilityText + "\n";
+
+	const cardDetails = document.createElement('p');
+	cardDetails.innerText = cardName + rarity + type + attribute + cardCost + stAndMHP + landLimit + itemLimit + abilityText;
+	cardDetails.style.color = "white";
+	cardDetails.style.fontSize = "12px";
+	cardDetails.style.marginLeft = "5px";
 
 
-	const cardType = document.createElement('p');
-	cardType.innerText = "Type: " + cardInfo.type;
-	cardType.style.color = "white";
-	cardType.style.fontSize = "12px";
-
-	const cardAttribute = document.createElement('p');
-	cardAttribute.innerText = "Attribute: " + cardInfo.attribute;
-	cardAttribute.style.color = "white";
-	cardAttribute.style.fontSize = "12px";
-
-	const cardCost = document.createElement('p');
-	cardCost.innerText = "Cost: " + cardInfo.costValue + " "+ cardInfo.costOther;
-	cardCost.style.color = "white";
-	cardCost.style.fontSize = "12px";
-
-	const stAndMHP = document.createElement('p');
-	stAndMHP.innerText = "ST/MHP: " + cardInfo.st + "/" + cardInfo.mhp;
-	stAndMHP.style.color = "white";
-	stAndMHP.style.fontSize = "12px";
-
-	const landLimit = document.createElement('p');
-	landLimit.innerText = "Land Limit: " + cardInfo.placeRestriction;
-	landLimit.style.color = "white";
-	landLimit.style.fontSize = "12px";
-
-	const itemLimit = document.createElement('p');
-	itemLimit.innerText = "Item Limit: " + cardInfo.itemRestriction;
-	itemLimit.style.color = "white";
-	itemLimit.style.fontSize = "12px";
-
-	const abilityText = document.createElement('p');
-	abilityText.innerText = "Ability Text: " + cardInfo.abilityText;
-	abilityText.style.color = "white";
-	abilityText.style.fontSize = "12px";
 //set better margins? make sure to refine style
 	cardStatsArea.appendChild(card);
-	cardStatsArea.appendChild(cardName);
-	cardStatsArea.appendChild(cardType);
-	cardStatsArea.appendChild(cardAttribute);
-	cardStatsArea.appendChild(cardCost);
-	cardStatsArea.appendChild(stAndMHP);
-	cardStatsArea.appendChild(landLimit);
-	cardStatsArea.appendChild(itemLimit);
-	cardStatsArea.appendChild(abilityText);
-}
+	cardStatsArea.appendChild(cardDetails);
 
+}
 function removeCardInfo()
 {
 	const cardStatsArea = document.querySelector(".cardStatsArea");
