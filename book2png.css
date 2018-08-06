@@ -8,7 +8,7 @@ body{
 }
 .flex-container-col{
 	display:flex;
-	
+
 	flex-direction: column
 }
 .flex-container a {
@@ -29,7 +29,7 @@ div.cardSelectionArea{
 div.editBookArea{
 	background-color: grey;
     width: 235px;
-    height: 560px;
+    height: 575px;
     overflow: scroll;
     display:flex;
     flex-direction: column;
