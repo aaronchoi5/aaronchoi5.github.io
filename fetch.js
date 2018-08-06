@@ -24,7 +24,7 @@ function book2png()
 			ctx.strokeStyle='black';
 			ctx.fillStyle='white';
 			ctx.font = "40px Arial";
-			ctx.lineWidth = "1px";
+			ctx.lineWidth = "5";
 			ctx.strokeText(number.toString(), (canX + 75), (canY + 120)); 
 			ctx.fillText(number.toString(), (canX + 75), (canY + 120)); 
 		}
@@ -218,11 +218,9 @@ function showCardInfo(cardInfo)
 	const cardDetails = document.createElement('p');
 	cardDetails.innerText = cardName + rarity + type + attribute + cardCost + stAndMHP + landLimit + itemLimit + abilityText;
 	cardDetails.style.color = "white";
-	cardDetails.style.fontSize = "12px";
+	cardDetails.style.fontSize = "15px";
 	cardDetails.style.marginLeft = "5px";
 
-
-//set better margins? make sure to refine style
 	cardStatsArea.appendChild(card);
 	cardStatsArea.appendChild(cardDetails);
 
