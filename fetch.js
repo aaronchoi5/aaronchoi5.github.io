@@ -199,39 +199,83 @@ function showCardInfo(cardInfo)
 
 	card.classList.add("center");
 
-	const cardName = cardInfo.name.toLowerCase().replace(/[^a-z0-9+]+/gi, '');
+	const imageName = cardInfo.name.toLowerCase().replace(/[^a-z0-9+]+/gi, '');
 
-	let imageLocation = "";
-
-	if (cardInfo.type === "Creature") 
-	{
-	    if (cardInfo.rarity === "E") 
-	    {
-	        imageLocation = "evo";
-	    } 
-	    else 
-	    {
-	        imageLocation = cardInfo.attribute.toLowerCase();
-	        
-	    }
-	} 
-	else if (cardInfo.type === "Spell") 
-	{
-	    imageLocation = "spells";
-	} 
-	else if (cardInfo.type === "Item") 
-	{
-	    imageLocation = "items";
-	}
-	const link = "./images/" + imageLocation + "/" + cardName + ".jpg";
+	const imageLocation = imageNameParser(imageName, cardInfo.type ,cardInfo.attribute, cardInfo.rarity)
+	const link = "./images/" + imageLocation + "/" + imageName + ".jpg";
 	card.src = link;
 	
+	const cardName = document.createElement('p');
+	cardName.innerText = "Name: " + cardInfo.name;
+	cardName.style.color = "white";
+
+	const cardType = document.createElement('p');
+	cardType.innerText = "Type: " + cardInfo.type;
+	cardType.style.color = "white";
+
+	const cardAttribute = document.createElement('p');
+	cardAttribute.innerText = "Attribute: " + cardInfo.attribute;
+	cardAttribute.style.color = "white";
+
+	const cardCost = document.createElement('p');
+	cardCost.innerText = "Cost: " + cardInfo.costValue + " "+ cardInfo.costOther;
+	cardCost.style.color = "white";
+
+	const stAndMHP = document.createElement('p');
+	stAndMHP.innerText = "ST/MHP: " + cardInfo.st + "/" + cardInfo.mhp;
+	stAndMHP.style.color = "white";
+
+	const landLimit = document.createElement('p');
+	landLimit.innerText = "Land Limit: " + cardInfo.placeRestriction;
+	landLimit.style.color = "white";
+
+	const itemLimit = document.createElement('p');
+	itemLimit.innerText = "Item Limit: " + cardInfo.itemRestriction;
+	itemLimit.style.color = "white";
+
+	const abilityText = document.createElement('p');
+	abilityText.innerText = "Ability Text: " + cardInfo.abilityText;
+	abilityText.style.color = "white";
+
 	cardStatsArea.appendChild(card);
+	cardStatsArea.appendChild(cardName);
+	cardStatsArea.appendChild(cardType);
+	cardStatsArea.appendChild(cardAttribute);
+	cardStatsArea.appendChild(cardCost);
+	cardStatsArea.appendChild(stAndMHP);
+	cardStatsArea.appendChild(landLimit);
+	cardStatsArea.appendChild(itemLimit);
+	cardStatsArea.appendChild(abilityText);
 }
+
 function removeCardInfo()
 {
 	const cardStatsArea = document.querySelector(".cardStatsArea");
 	cardStatsArea.innerHTML = '';
+}
+function imageNameParser(cardName,type ,attribute, rarity)
+{
+	let folderLocation = "";
+	if (type === "Creature") 
+	{
+	    if (rarity === "E") 
+	    {
+	        folderLocation = "evo";
+	    } 
+	    else 
+	    {
+	        folderLocation = attribute.toLowerCase();
+	    }
+	} 
+	else if (type === "Spell") 
+	{
+	    folderLocation = "spells";
+	} 
+	else if (type === "Item") 
+	{
+	    folderLocation = "items";
+	}
+	return folderLocation;
 }
 function cardCreation(cardInfo)
 {
@@ -240,31 +284,11 @@ function cardCreation(cardInfo)
 	card.title = cardInfo.name;
 	card.classList.add("card");
 
-	const cardName = cardInfo.name.toLowerCase().replace(/[^a-z0-9+]+/gi, '');
+	const imageName = cardInfo.name.toLowerCase().replace(/[^a-z0-9+]+/gi, '');
 	const slotColor = determineSlotColor(cardInfo.type, cardInfo.attribute);
-	let imageLocation = "";
-
-	if (cardInfo.type === "Creature") 
-	{
-	    if (cardInfo.rarity === "E") 
-	    {
-	        imageLocation = "evo";
-	    } 
-	    else 
-	    {
-	        imageLocation = cardInfo.attribute.toLowerCase();
-	        
-	    }
-	} 
-	else if (cardInfo.type === "Spell") 
-	{
-	    imageLocation = "spells";
-	} 
-	else if (cardInfo.type === "Item") 
-	{
-	    imageLocation = "items";
-	}
-	const link = "./images/thumbnails/" + imageLocation + "/" + cardName + ".jpg";
+	
+	let folderLocation = imageNameParser(imageName, cardInfo.type ,cardInfo.attribute, cardInfo.rarity)
+	const link = "./images/thumbnails/" + folderLocation + "/" + imageName + ".jpg";
 	card.src = link;
 
 	card.addEventListener("click", function(){addToBook(cardInfo.name, cardInfo.num, link, slotColor)},false);
