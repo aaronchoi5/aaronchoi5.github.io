@@ -192,6 +192,47 @@ function determineSlotColor(cardType, cardAttribute)
 	}
 	return color;
 }
+function showCardInfo(cardInfo)
+{
+	const cardStatsArea = document.querySelector(".cardStatsArea");
+	const card = document.createElement('img');
+
+	card.classList.add("center");
+
+	const cardName = cardInfo.name.toLowerCase().replace(/[^a-z0-9+]+/gi, '');
+
+	let imageLocation = "";
+
+	if (cardInfo.type === "Creature") 
+	{
+	    if (cardInfo.rarity === "E") 
+	    {
+	        imageLocation = "evo";
+	    } 
+	    else 
+	    {
+	        imageLocation = cardInfo.attribute.toLowerCase();
+	        
+	    }
+	} 
+	else if (cardInfo.type === "Spell") 
+	{
+	    imageLocation = "spells";
+	} 
+	else if (cardInfo.type === "Item") 
+	{
+	    imageLocation = "items";
+	}
+	const link = "./images/" + imageLocation + "/" + cardName + ".jpg";
+	card.src = link;
+	
+	cardStatsArea.appendChild(card);
+}
+function removeCardInfo()
+{
+	const cardStatsArea = document.querySelector(".cardStatsArea");
+	cardStatsArea.innerHTML = '';
+}
 function cardCreation(cardInfo)
 {
 	const selectionArea = document.querySelector(".cardSelectionArea");
@@ -227,6 +268,8 @@ function cardCreation(cardInfo)
 	card.src = link;
 
 	card.addEventListener("click", function(){addToBook(cardInfo.name, cardInfo.num, link, slotColor)},false);
+	card.addEventListener("mouseover", function(){showCardInfo(cardInfo)},false);
+	card.addEventListener("mouseout", function(){removeCardInfo()},false);
 	selectionArea.appendChild(card);
 }
 function selectFilter()
