@@ -208,35 +208,44 @@ function showCardInfo(cardInfo)
 	const cardName = document.createElement('p');
 	cardName.innerText = "Name: " + cardInfo.name;
 	cardName.style.color = "white";
+	cardName.style.fontSize = "12px";
+
 
 	const cardType = document.createElement('p');
 	cardType.innerText = "Type: " + cardInfo.type;
 	cardType.style.color = "white";
+	cardType.style.fontSize = "12px";
 
 	const cardAttribute = document.createElement('p');
 	cardAttribute.innerText = "Attribute: " + cardInfo.attribute;
 	cardAttribute.style.color = "white";
+	cardAttribute.style.fontSize = "12px";
 
 	const cardCost = document.createElement('p');
 	cardCost.innerText = "Cost: " + cardInfo.costValue + " "+ cardInfo.costOther;
 	cardCost.style.color = "white";
+	cardCost.style.fontSize = "12px";
 
 	const stAndMHP = document.createElement('p');
 	stAndMHP.innerText = "ST/MHP: " + cardInfo.st + "/" + cardInfo.mhp;
 	stAndMHP.style.color = "white";
+	stAndMHP.style.fontSize = "12px";
 
 	const landLimit = document.createElement('p');
 	landLimit.innerText = "Land Limit: " + cardInfo.placeRestriction;
 	landLimit.style.color = "white";
+	landLimit.style.fontSize = "12px";
 
 	const itemLimit = document.createElement('p');
 	itemLimit.innerText = "Item Limit: " + cardInfo.itemRestriction;
 	itemLimit.style.color = "white";
+	itemLimit.style.fontSize = "12px";
 
 	const abilityText = document.createElement('p');
 	abilityText.innerText = "Ability Text: " + cardInfo.abilityText;
 	abilityText.style.color = "white";
-
+	abilityText.style.fontSize = "12px";
+//set better margins? make sure to refine style
 	cardStatsArea.appendChild(card);
 	cardStatsArea.appendChild(cardName);
 	cardStatsArea.appendChild(cardType);
