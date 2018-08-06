@@ -44,7 +44,7 @@ function copyListToClipboard()
 	{
 		outputString += cardsData[i].childNodes[0].innerText + " " + cardsData[i].childNodes[1].innerText + "\n";
 	}
-	//hackysolution
+	//hackysolution because copying from multiple elements is complicated apparently
 	const copyToClipboard = str => {
 
 	  const el = document.createElement('textarea');  // Create a <textarea> element
@@ -68,7 +68,7 @@ function copyListToClipboard()
 	};
 	copyToClipboard(outputString);
 }
-function addToBook(cardName,cardNum, link)
+function addToBook(cardName,cardNum, link, slotColor)
 {
 	if(!slot_map.has(cardName) && bookCounter < 50)
 	{
@@ -77,7 +77,7 @@ function addToBook(cardName,cardNum, link)
 
 		const cardsData = document.querySelector(".editBookArea").childNodes;
 		var beforeNode = undefined;
-		//console.log(cardsData);
+		//logic to place the new card slot
 		for(let i = 0; i < cardsData.length; i++ )
 		{
 			console.log(cardsData[i].style.order);
@@ -91,13 +91,12 @@ function addToBook(cardName,cardNum, link)
 		const wrapper = document.createElement('div');
 		wrapper.setAttribute("class", "flex-container");
 		wrapper.setAttribute("id", cardName);
-
-		//flexbox autosorts them according to their card number property <3
 		wrapper.style.order = cardNum;
 
 		const slot = document.createElement('div');
 		slot.classList.add("name");
 		slot.innerText = cardName;
+		slot.style.backgroundColor = slotColor;
 
 		const slotNum = document.createElement('div');
 		slotNum.classList.add("count");
@@ -157,7 +156,42 @@ function editSlotCount(cardName, addOrSubtract)
 	countElement.innerText = updatedCount;
 	slot_map.set(cardName, [updatedCount, slot_map.get(cardName)[1]]);
 }
-
+function determineSlotColor(cardType, cardAttribute)
+{
+	var color = ""
+	if (cardType === "Creature") 
+	{
+		if(cardAttribute == "Neutral")
+	        {
+	        	color = "#A9A9A9";
+	        }
+	        else if(cardAttribute == "Fire")
+	        {
+	        	color = "#DC143C";	
+	        }
+	        else if(cardAttribute == "Water")
+	        {
+	        	color = "#00BFFF";
+	        }
+	        else if(cardAttribute == "Earth")
+	        {
+	        	color = "#32CD32";
+	        }
+	        else if(cardAttribute == "Air")
+	        {
+	        	color = "#FFD700";
+	        }
+	}
+	else if (cardType === "Spell") 
+	{
+	    color = "#F5FFFA";
+	} 
+	else if (cardType === "Item") 
+	{
+	    color = "#B0C4DE";
+	}
+	return color;
+}
 function cardCreation(cardInfo)
 {
 	const selectionArea = document.querySelector(".cardSelectionArea");
@@ -166,7 +200,7 @@ function cardCreation(cardInfo)
 	card.classList.add("card");
 
 	const cardName = cardInfo.name.toLowerCase().replace(/[^a-z0-9+]+/gi, '');
-
+	const slotColor = determineSlotColor(cardInfo.type, cardInfo.attribute);
 	let imageLocation = "";
 
 	if (cardInfo.type === "Creature") 
@@ -178,6 +212,7 @@ function cardCreation(cardInfo)
 	    else 
 	    {
 	        imageLocation = cardInfo.attribute.toLowerCase();
+	        
 	    }
 	} 
 	else if (cardInfo.type === "Spell") 
@@ -191,7 +226,7 @@ function cardCreation(cardInfo)
 	const link = "./images/thumbnails/" + imageLocation + "/" + cardName + ".jpg";
 	card.src = link;
 
-	card.addEventListener("click", function(){addToBook(cardInfo.name, cardInfo.num, link)},false);
+	card.addEventListener("click", function(){addToBook(cardInfo.name, cardInfo.num, link, slotColor)},false);
 	selectionArea.appendChild(card);
 }
 function selectFilter()
