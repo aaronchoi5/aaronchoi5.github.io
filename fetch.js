@@ -68,11 +68,100 @@ function copyListToClipboard()
 	};
 	copyToClipboard(outputString);
 }
-function addToBook(cardName,cardNum, link, slotColor)
+
+function updateUniquesAndTotals(unique, type, subType, rarity, addOrSubtract)
 {
+	if(unique)
+	{
+		var uniqueTypeID = "unique" + type + "s";
+		var uniqueSubTypeID = "unique" + subType + "s";
+		var uniqueRarityID = "unique" + rarity + "s";
+		var uniqueTotalID = "uniqueTotal";
+
+		var uniqueTypeCountCell = document.getElementById(uniqueTypeID);
+		var uniqueSubTypeCountCell = document.getElementById(uniqueSubTypeID);
+		var uniqueRarityCountCell = document.getElementById(uniqueRarityID);
+		var uniqueTotalCountCell = document.getElementById(uniqueTotalID);
+
+		var uniqueTypeCount = parseInt(uniqueTypeCountCell.innerText);
+		var uniqueSubTypeCount = parseInt(uniqueSubTypeCountCell.innerText);
+		var uniqueRarityCount = parseInt(uniqueRarityCountCell.innerText);
+		var uniqueTotalCount = parseInt(uniqueTotalCountCell.innerText);
+
+
+		if(addOrSubtract == "add")
+		{
+			uniqueTypeCount++;
+			uniqueSubTypeCount++;
+			uniqueRarityCount++;
+			uniqueTotalCount++;
+		}
+		else
+		{
+			uniqueTypeCount--;
+			uniqueSubTypeCount--;
+			uniqueRarityCount--;
+			uniqueTotalCount--;
+		}
+		uniqueTypeCountCell.innerText = uniqueTypeCount;
+		uniqueSubTypeCountCell.innerText = uniqueSubTypeCount;
+		uniqueRarityCountCell.innerText = uniqueRarityCount;
+		uniqueTotalCountCell.innerText = uniqueTotalCount;
+	}
+
+	var totalTypeID = "total" + type + "s";
+	var totalSubTypeID = "total" + subType + "s";
+	var totalRarityID = "total" + rarity + "s";
+	var totalID = "total";
+
+	var totalTypeCountCell = document.getElementById(totalTypeID);
+	var totalSubTypeCountCell = document.getElementById(totalSubTypeID);
+	var totalRarityCountCell = document.getElementById(totalRarityID);
+	var totalCountCell = document.getElementById(totalID);
+
+	var totalTypeCount = parseInt(totalTypeCountCell.innerText);
+	var totalSubTypeCount = parseInt(totalSubTypeCountCell.innerText);
+	var totalRarityCount = parseInt(totalRarityCountCell.innerText);
+	var totalCount = parseInt(totalCountCell.innerText);
+	if(addOrSubtract == "add")
+	{
+		totalTypeCount++;
+		totalSubTypeCount++;
+		totalRarityCount++;
+		totalCount++;
+	}
+	else
+	{
+		totalTypeCount--;
+		totalSubTypeCount--;
+		totalRarityCount--;
+		totalCount--;
+	}
+
+	totalTypeCountCell.innerText = totalTypeCount;
+	totalSubTypeCountCell.innerText = totalSubTypeCount;
+	totalRarityCountCell.innerText = totalRarityCount;
+	totalCountCell.innerText = totalCount;
+
+}
+
+function addToBook(cardInfo, link, slotColor)
+{
+	const cardName = cardInfo.name;
+	const cardNum = cardInfo.num;
+	var unique = true;
+	if(cardInfo.type == "Creature")
+	{
+		var subType = cardInfo.attribute;
+	}
+	else
+	{
+		var subType = cardInfo.classification;
+	}
+	
 	if(!slot_map.has(cardName) && bookCounter < 50)
 	{
-		slot_map.set(cardName, [1, link]);
+		slot_map.set(cardName, [1, link, cardInfo]);
 		const bookArea = document.querySelector(".editBookArea");
 
 		const cardsData = document.querySelector(".editBookArea").childNodes;
@@ -87,7 +176,6 @@ function addToBook(cardName,cardNum, link, slotColor)
 				break;
 			}
 		}
-
 		const wrapper = document.createElement('div');
 		wrapper.setAttribute("class", "flex-container");
 		wrapper.setAttribute("id", cardName);
@@ -104,7 +192,7 @@ function addToBook(cardName,cardNum, link, slotColor)
 
 		wrapper.appendChild(slot);
 		wrapper.appendChild(slotNum);
-		wrapper.addEventListener("click", function(){removeFromBook(cardName)},false);
+		wrapper.addEventListener("click", function(){removeFromBook(cardName, cardInfo.type, subType, cardInfo.rarity)},false);
 		if( beforeNode === undefined)
 		{
 			bookArea.appendChild(wrapper);
@@ -113,31 +201,35 @@ function addToBook(cardName,cardNum, link, slotColor)
 		{
 			bookArea.insertBefore(wrapper, beforeNode);
 		}
-		
 		bookCounter++;
+		updateUniquesAndTotals(unique, cardInfo.type, subType, cardInfo.rarity, "add");
 	}
 	else if( slot_map.get(cardName)[0] < 4 && bookCounter < 50)
 	{
 		editSlotCount(cardName, "add");
 		bookCounter++;
+		unique = false;
+		updateUniquesAndTotals(unique, cardInfo.type, subType, cardInfo.rarity, "add");
 	}
 	
-	console.log(bookCounter);
 }
 
-function removeFromBook(cardName)
+function removeFromBook(cardName, type, subType, rarity)
 {
+	var unique = false;
 	if(slot_map.get(cardName)[0] == 1)
 	{
 		const bookArea = document.querySelector(".editBookArea");
 		const slotWrapper = document.getElementById(cardName);
 		bookArea.removeChild(slotWrapper);
 		slot_map.delete(cardName);
+		unique = true;
 	}
 	else
 	{
 		editSlotCount(cardName, "subtract");
 	}
+	updateUniquesAndTotals(unique, type, subType, rarity, "subtract");
 	bookCounter--;
 }
 function editSlotCount(cardName, addOrSubtract)
@@ -154,7 +246,7 @@ function editSlotCount(cardName, addOrSubtract)
 		console.log(updatedCount);
 	}
 	countElement.innerText = updatedCount;
-	slot_map.set(cardName, [updatedCount, slot_map.get(cardName)[1]]);
+	slot_map.set(cardName, [updatedCount, slot_map.get(cardName)[1], slot_map.get(cardName)[2]]);
 }
 function determineSlotColor(cardType, cardAttribute)
 {
@@ -204,11 +296,21 @@ function showCardInfo(cardInfo)
 	const imageLocation = imageNameParser(imageName, cardInfo.type ,cardInfo.attribute, cardInfo.rarity)
 	const link = "./images/" + imageLocation + "/" + imageName + ".jpg";
 	card.src = link;
+	var attribute = "";
+	if( cardInfo.type == "Creature")
+	{
+		attribute = cardInfo.attribute;
+	}
+	else
+	{
+		attribute = cardInfo.classification;
+	}
+	
 	
 	const cardName = "Name: " + cardInfo.name + "\n";
-	const rarity = "Rarity: " + cardInfo.rarity + "\n" ;
+	const rarity = "Rarity: " + cardInfo.rarity + "\n";
 	const type = "Type: " + cardInfo.type + "\n";
-	const attribute = "Attribute: " + cardInfo.attribute + "\n";
+	const subType = "Attribute: " + attribute + "\n";
 	const cardCost = "Cost: " + cardInfo.costValue + " "+ cardInfo.costOther + "\n";
 	const stAndMHP = "ST/MHP: " + cardInfo.st + "/" + cardInfo.mhp + "\n";
 	const landLimit = "Land Limit: " + cardInfo.placeRestriction + "\n";
@@ -216,7 +318,7 @@ function showCardInfo(cardInfo)
 	const abilityText = "Ability Text: " + cardInfo.abilityText + "\n";
 
 	const cardDetails = document.createElement('p');
-	cardDetails.innerText = cardName + rarity + type + attribute + cardCost + stAndMHP + landLimit + itemLimit + abilityText;
+	cardDetails.innerText = cardName + rarity + type + subType + cardCost + stAndMHP + landLimit + itemLimit + abilityText;
 	cardDetails.style.color = "white";
 	cardDetails.style.fontSize = "15px";
 	cardDetails.style.marginLeft = "5px";
@@ -230,7 +332,7 @@ function removeCardInfo()
 	const cardStatsArea = document.querySelector(".cardStatsArea");
 	cardStatsArea.innerHTML = '';
 }
-function imageNameParser(cardName,type ,attribute, rarity)
+function imageNameParser(cardName, type, attribute, rarity)
 {
 	let folderLocation = "";
 	if (type === "Creature") 
@@ -268,7 +370,7 @@ function cardCreation(cardInfo)
 	const link = "./images/thumbnails/" + folderLocation + "/" + imageName + ".jpg";
 	card.src = link;
 
-	card.addEventListener("click", function(){addToBook(cardInfo.name, cardInfo.num, link, slotColor)},false);
+	card.addEventListener("click", function(){addToBook(cardInfo, link, slotColor)},false);
 	card.addEventListener("mouseover", function(){showCardInfo(cardInfo)},false);
 	card.addEventListener("mouseout", function(){removeCardInfo()},false);
 	selectionArea.appendChild(card);
