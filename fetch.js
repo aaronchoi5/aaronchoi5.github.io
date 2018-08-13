@@ -34,7 +34,12 @@ function book2png()
 		{
 			canY += 125;
 		}
-	}	
+	}
+	var image = new Image();
+	image.src = canvas.toDataURL("image/png");
+	var imageArea = document.getElementById('bookImage');
+	imageArea.innerHTML = '';
+	imageArea.src = image.src;
 }
 
 function copyListToClipboard()
@@ -380,9 +385,10 @@ function cardCreation(cardInfo)
 function search()
 {
 	var text = document.getElementById("mySearch").value;
-	console.log(text);
 	const selectionArea = document.querySelector(".cardSelectionArea");
 	selectionArea.innerHTML = '';
+	//not an optimal way to search through an entire collection 
+	//TODO implement a better way in the future.
 	for(let i = 0; i < card_data.length; i++)
 	{
 		if(card_data[i].name.toLowerCase().includes(text.toLowerCase()) )

@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="book2png.css">
     <script type="text/javascript" src="card_data.json"></script>
     <script src="fetch.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -162,7 +163,8 @@
         </tbody>
     </table>
     </div>
-    <canvas id="canvas" width="600" height="400"></canvas>
+    <img id="bookImage">
+    <canvas id="canvas" width="600" height="400" style="display:none"></canvas>
     <script type="text/javascript">
     window.onload = selectFilter();
     </script>
