@@ -396,17 +396,36 @@ function search()
 	var text = document.getElementById("mySearch").value;
 	const selectionArea = document.querySelector(".cardSelectionArea");
 	selectionArea.innerHTML = '';
-	//not an optimal way to search through an entire collection 
-	//TODO implement a better way in the future.
-	for(let i = 0; i < card_data.length; i++)
+	if(text.charAt(0) == ":")
 	{
-		if(card_data[i].name.toLowerCase().includes(text.toLowerCase()) )
+		const keyText = text.substring(1);
+		keyTextSearch(keyText);
+	}
+	else
+	{
+		
+		//not an optimal way to search through an entire collection 
+		//TODO implement a better way in the future.
+		for(let i = 0; i < card_data.length; i++)
 		{
-			cardCreation(card_data[i]);
+			if(card_data[i].name.toLowerCase().includes(text.toLowerCase()) )
+			{
+				cardCreation(card_data[i]);
+			}
 		}
 	}
+	
 }
-
+function keyTextSearch(keyText)
+{
+	for(let i = 0; i < card_data.length; i++)
+		{
+			if(card_data[i].abilityText.toLowerCase().includes(keyText.toLowerCase()) )
+			{
+				cardCreation(card_data[i]);
+			}
+		}
+}
 function selectFilter()
 {
 	card_data = []
