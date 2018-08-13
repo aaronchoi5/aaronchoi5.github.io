@@ -38,7 +38,7 @@ function book2png()
 	var image = new Image();
 	image.src = canvas.toDataURL("image/png");
 	var imageArea = document.getElementById('bookImage');
-	imageArea.innerHTML = '';
+
 	imageArea.src = image.src;
 }
 
