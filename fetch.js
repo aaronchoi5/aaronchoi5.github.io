@@ -199,6 +199,8 @@ function addToBook(cardInfo, link, slotColor)
 		wrapper.appendChild(slot);
 		wrapper.appendChild(slotNum);
 		wrapper.addEventListener("click", function(){removeFromBook(cardName, cardInfo.type, subType, cardInfo.rarity)},false);
+		wrapper.addEventListener("mouseover", function(){showCardInfo(cardInfo)},false);
+		wrapper.addEventListener("mouseout", function(){removeCardInfo()},false);
 		if( beforeNode === undefined)
 		{
 			bookArea.appendChild(wrapper);
