@@ -199,6 +199,7 @@ function addToBook(cardInfo, link, slotColor)
 		wrapper.appendChild(slot);
 		wrapper.appendChild(slotNum);
 		wrapper.addEventListener("click", function(){removeFromBook(cardName, cardInfo.type, subType, cardInfo.rarity)},false);
+		wrapper.addEventListener("click", function(){cleanIfNonExistant(cardName)},false);
 		wrapper.addEventListener("mouseover", function(){showCardInfo(cardInfo)},false);
 		wrapper.addEventListener("mouseout", function(){removeCardInfo()},false);
 		if( beforeNode === undefined)
@@ -221,7 +222,13 @@ function addToBook(cardInfo, link, slotColor)
 	}
 	
 }
-
+function cleanIfNonExistant(cardName)
+{
+	if(!slot_map.has(cardName))
+	{
+		removeCardInfo();
+	}
+}
 function removeFromBook(cardName, type, subType, rarity)
 {
 	var unique = false;
