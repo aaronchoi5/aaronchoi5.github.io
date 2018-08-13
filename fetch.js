@@ -36,6 +36,7 @@ function book2png()
 		}
 	}	
 }
+
 function copyListToClipboard()
 {
 	const cardsData = document.querySelector(".editBookArea").childNodes;
@@ -375,6 +376,22 @@ function cardCreation(cardInfo)
 	card.addEventListener("mouseout", function(){removeCardInfo()},false);
 	selectionArea.appendChild(card);
 }
+
+function search()
+{
+	var text = document.getElementById("mySearch").value;
+	console.log(text);
+	const selectionArea = document.querySelector(".cardSelectionArea");
+	selectionArea.innerHTML = '';
+	for(let i = 0; i < card_data.length; i++)
+	{
+		if(card_data[i].name.toLowerCase().includes(text.toLowerCase()) )
+		{
+			cardCreation(card_data[i]);
+		}
+	}
+}
+
 function selectFilter()
 {
 	card_data = []

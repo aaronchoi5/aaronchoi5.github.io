@@ -29,7 +29,8 @@
         <a href=# class="butt" onclick="selectFilter('Spell','Enchant')">Enchant</a>
         <a href=# class="butt" onclick="selectFilter('Spell','Multi-Enchant')">Multi-Enchant</a>
         <a href=# class="butt" onclick="selectFilter('Spell','Global')">Global</a>
-        <input type="search" placeholder="Search..">
+        <input type="text" placeholder="Search.." id="mySearch" name="q" oninput="search()">
+
     </div>
     <div class="flex-container">
         <div style="float:left;" class="cardSelectionArea"></div>
