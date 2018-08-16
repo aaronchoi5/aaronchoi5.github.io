@@ -9,13 +9,12 @@ function book2png()
 	
 	canvas.height = Math.floor((slot_map.size / 6 + 1)) * 125;
 	const cardsData = document.querySelector(".editBookArea").childNodes;// sort childnodes?slot_map?
-	const selectionArea = document.querySelector(".cardSelectionArea");
 	var canY = 0;
 	var canX = 0;
 
 	for(let i = 0; i < cardsData.length; i++)
 	{
-		var number = slot_map.get(cardsData[i].id)[0].toString()
+		var number = slot_map.get(cardsData[i].id)[0].toString();
 		var img = new Image();
 		img.src = slot_map.get(cardsData[i].id)[1];
 		ctx.drawImage(img,canX,canY);

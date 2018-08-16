@@ -35,8 +35,7 @@ div.editBookArea{
     width: 235px;
     height: 575px;
     overflow: scroll;
-    display:flex;
-    flex-direction: column;
+ 
 }
 div.cardStatsArea{
 	width: 539px;
