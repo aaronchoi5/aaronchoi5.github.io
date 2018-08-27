@@ -6,9 +6,9 @@ function book2png()
 {
 	var canvas = document.querySelector('canvas');
 	var ctx = canvas.getContext('2d');
-	ctx.clearRect(0,0,canvas.height, canvas.width);
+	
 	canvas.height = Math.floor((slot_map.size / 6 + 1)) * 125;
-	const cardsData = document.querySelector(".editBookArea").childNodes;
+	const cardsData = document.querySelector(".editBookArea").childNodes;// sort childnodes?slot_map?
 	var canY = 0;
 	var canX = 0;
 
@@ -16,6 +16,10 @@ function book2png()
 	{
 		var number = slot_map.get(cardsData[i].id)[0].toString();
 		var img = new Image();
+		img.onload = function()
+		{
+
+		}
 		img.src = slot_map.get(cardsData[i].id)[1];
 		ctx.drawImage(img,canX,canY);
 		if(number > 1)
@@ -27,16 +31,20 @@ function book2png()
 			ctx.strokeText(number.toString(), (canX + 75), (canY + 120)); 
 			ctx.fillText(number.toString(), (canX + 75), (canY + 120)); 
 		}
+		
 		canX = (canX + 100) % 600;
 		if(canX == 0 && i != 0)
 		{
 			canY += 125;
 		}
+		
 	}
+
+	//code to convert canvas to image so users can copy easily
 	var image = new Image();
 	image.src = canvas.toDataURL("image/png");
 	var imageArea = document.getElementById('bookImage');
-	image.onload = function(){imageArea.src = image.src;};
+	imageArea.src = image.src;
 	
 }
 
@@ -173,6 +181,7 @@ function addToBook(cardInfo, link, slotColor)
 		//logic to place the new card slot
 		for(let i = 0; i < cardsData.length; i++ )
 		{
+			console.log(cardsData[i].style.order);
 			if(cardsData[i].style.order > cardNum )
 			{
 				beforeNode = cardsData[i];
@@ -255,6 +264,7 @@ function editSlotCount(cardName, addOrSubtract)
 	else
 	{
 		updatedCount--;
+		console.log(updatedCount);
 	}
 	countElement.innerText = updatedCount;
 	slot_map.set(cardName, [updatedCount, slot_map.get(cardName)[1], slot_map.get(cardName)[2]]);
